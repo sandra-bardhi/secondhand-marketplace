@@ -1,6 +1,8 @@
 package com.secondhand.marketplace.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.secondhand.marketplace.dto.GarmentDto;
+import com.secondhand.marketplace.dto.View;
 import com.secondhand.marketplace.entity.Garment;
 import com.secondhand.marketplace.entity.User;
 import com.secondhand.marketplace.exceptions.GarmentNotFoundException;
@@ -33,6 +35,7 @@ public class GarmentController {
     }
     @Operation(summary = "Get all clothes or filter by type")
     @GetMapping
+    @JsonView(View.Detailed.class)
     public ResponseEntity<List<GarmentDto>> getAllClothes(@RequestParam(required = false) String type) {
         List<Garment> garments = (type != null) ? garmentService.getAllGarments(type) : garmentService.getAllGarments(null);
         List<GarmentDto> garmentDtos = garments.stream()
@@ -57,6 +60,7 @@ public class GarmentController {
     }
     @Operation(summary = "Publish a new garment")
     @PostMapping("/add")
+    @JsonView(View.Summary.class)
     public ResponseEntity<GarmentDto> publishGarment(@RequestBody GarmentDto garmentDTO, @AuthenticationPrincipal User currentUser) {
         if (currentUser == null) {
             log.warn("Unauthorized access attempt to publish garment");
@@ -79,6 +83,7 @@ public class GarmentController {
             @ApiResponse(responseCode = "404", description = "Garment not found")
     })
     @PutMapping("/{id}")
+    @JsonView(View.Summary.class)
     public ResponseEntity<GarmentDto> updateGarment(@PathVariable Long id, @RequestBody GarmentDto garmentDTO, @AuthenticationPrincipal User currentUser) throws GarmentNotFoundException {
         if (currentUser == null) {
             log.warn("Unauthorized access attempt to update garment with id {}", id);
