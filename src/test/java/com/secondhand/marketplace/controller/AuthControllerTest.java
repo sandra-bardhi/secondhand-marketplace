@@ -33,10 +33,6 @@ public class AuthControllerTest {
     @Mock
     private Authentication authentication;
 
-    @BeforeEach
-    public void setUp() {
-        // Setup handled by MockitoExtension
-    }
 
     @Test
     public void testAuthenticate_Success() {

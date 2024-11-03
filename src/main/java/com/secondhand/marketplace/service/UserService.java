@@ -13,7 +13,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Constructor injection for better testability
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -21,8 +20,9 @@ public class UserService {
 
     public User registerUser(User user) {
         log.info("Registering user: {}", user);
-
-        // Encode the user's password before saving
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new RuntimeException("User with username " + user.getUsername() + " already exists");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 

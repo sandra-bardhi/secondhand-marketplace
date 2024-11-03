@@ -33,10 +33,7 @@ public class GarmentControllerTest {
     @Mock
     private ModelMapper modelMapper;
 
-    @BeforeEach
-    public void setUp() {
-        // This is not needed as MockitoExtension handles initialization
-    }
+
 
     @Test
     public void testGetAllClothes_NoType_ReturnsGarments() {

@@ -46,7 +46,6 @@ public class UserControllerTest {
         UserRegistrationDTO userDto = new UserRegistrationDTO("user", "password", "Full Name", "Address");
         User user = new User("user", "password", "Full Name", "Address");
 
-        // Mock the behavior of ModelMapper and UserService
         when(modelMapper.map(any(UserRegistrationDTO.class), any())).thenReturn(user);
         when(userService.registerUser(user)).thenReturn(user);
 
@@ -60,11 +59,9 @@ public class UserControllerTest {
     @Test
     public void registerUser_shouldReturnBadRequest_whenUserServiceFails() throws Exception {
         UserRegistrationDTO userDto = new UserRegistrationDTO("user", "password", "Full Name", "Address");
-        User user = new User(); // Create an instance of User
+        User user = new User();
 
-        // Mock the behavior of ModelMapper
         when(modelMapper.map(any(UserRegistrationDTO.class), any())).thenReturn(user);
-        // Simulate an exception when registering the user
         doThrow(new RuntimeException("User registration failed")).when(userService).registerUser(user);
         mockMvc.perform(post("/api/register")
                         .contentType(MediaType.APPLICATION_JSON)
